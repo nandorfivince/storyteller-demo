@@ -4,6 +4,7 @@
 import type { InitOptions, CreateStoryRowOptions, OpenStoryOptions } from './types'
 import { setEndpoint, isInitialized } from './api'
 import { createStoryRow as createRow } from './components/StoryRow'
+import { openPlayer, closePlayer } from './components/Player'
 import { removeStyles } from './styles'
 
 export type { InitOptions, CreateStoryRowOptions, OpenStoryOptions, Story, StoryDetail, Page } from './types'
@@ -33,15 +34,27 @@ export async function createStoryRow(options: CreateStoryRowOptions): Promise<vo
  * Open a story in the fullscreen player
  * @param options - Story ID and optional start index
  */
-export function openStory(options: OpenStoryOptions): void {
-  console.log('[MiniStories] openStory called:', options)
-  // Player will be implemented in Phase 5
+export async function openStory(options: OpenStoryOptions): Promise<void> {
+  if (!isInitialized()) {
+    console.error('[MiniStories] SDK not initialized. Call initialize() first.')
+    return
+  }
+  console.log('[MiniStories] Opening story:', options.storyId)
+  await openPlayer(options)
+}
+
+/**
+ * Close the story player
+ */
+export function closeStory(): void {
+  closePlayer()
 }
 
 /**
  * Clean up SDK resources
  */
 export function destroy(): void {
+  closePlayer()
   setEndpoint('')
   removeStyles()
   console.log('[MiniStories] SDK destroyed')
