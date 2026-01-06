@@ -2,7 +2,7 @@
 // A lightweight SDK for embedding story experiences
 
 import type { InitOptions, CreateStoryRowOptions, OpenStoryOptions } from './types'
-import { setEndpoint, getEndpoint } from './api'
+import { setEndpoint, isInitialized } from './api'
 import { createStoryRow as createRow } from './components/StoryRow'
 import { removeStyles } from './styles'
 
@@ -14,7 +14,7 @@ export type { InitOptions, CreateStoryRowOptions, OpenStoryOptions, Story, Story
  */
 export function initialize(options: InitOptions): void {
   setEndpoint(options.endpoint)
-  console.log('[MiniStories] SDK initialized with endpoint:', options.endpoint)
+  console.log('[MiniStories] SDK initialized with endpoint:', options.endpoint || '(same origin)')
 }
 
 /**
@@ -22,7 +22,7 @@ export function initialize(options: InitOptions): void {
  * @param options - Container element and optional category filter
  */
 export async function createStoryRow(options: CreateStoryRowOptions): Promise<void> {
-  if (!getEndpoint()) {
+  if (!isInitialized()) {
     console.error('[MiniStories] SDK not initialized. Call initialize() first.')
     return
   }

@@ -10,8 +10,12 @@ export function getEndpoint(): string | null {
   return endpoint
 }
 
+export function isInitialized(): boolean {
+  return endpoint !== null
+}
+
 export async function fetchStories(category?: string): Promise<Story[]> {
-  if (!endpoint) {
+  if (endpoint === null) {
     console.error('[MiniStories] SDK not initialized. Call initialize() first.')
     return []
   }
@@ -33,7 +37,7 @@ export async function fetchStories(category?: string): Promise<Story[]> {
 }
 
 export async function fetchStoryDetail(storyId: number): Promise<StoryDetail | null> {
-  if (!endpoint) {
+  if (endpoint === null) {
     console.error('[MiniStories] SDK not initialized. Call initialize() first.')
     return null
   }
