@@ -14,7 +14,13 @@ body {
 .app {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .app {
+    padding: 2rem 3rem;
+  }
 }
 
 header {
@@ -23,13 +29,26 @@ header {
 }
 
 header h1 {
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
 }
 
 header p {
   color: #888;
   margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  header p {
+    font-size: 1rem;
+  }
 }
 
 /* Navigation */
@@ -37,17 +56,25 @@ header p {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .nav-btn {
   background: #1a1a1a;
   border: 1px solid #333;
   color: #888;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.2s;
+}
+
+@media (min-width: 768px) {
+  .nav-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 .nav-btn:hover {
@@ -63,8 +90,20 @@ header p {
 
 /* Consumer Page */
 .consumer-page h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .consumer-page h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* SDK container wrapper - no special styling needed */
+.sdk-container {
+  /* SDK handles its own styling */
 }
 
 .story-row {
@@ -72,14 +111,23 @@ header p {
   gap: 1rem;
   overflow-x: auto;
   padding: 0.5rem 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.story-row::-webkit-scrollbar {
+  display: none;
 }
 
 /* Story Card */
 .story-card {
   flex-shrink: 0;
-  width: 160px;
+  width: 140px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  scroll-snap-align: start;
 }
 
 .story-card:hover {
@@ -87,8 +135,8 @@ header p {
 }
 
 .story-card__cover {
-  width: 160px;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 9 / 16;
   border-radius: 12px;
   overflow: hidden;
   background: #1a1a1a;
@@ -110,7 +158,7 @@ header p {
 }
 
 .story-card__title {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
   white-space: nowrap;
@@ -122,6 +170,39 @@ header p {
   font-size: 0.75rem;
   color: #888;
   text-transform: uppercase;
+}
+
+/* Mobile responsive cards */
+@media (max-width: 480px) {
+  .story-row {
+    gap: 0.75rem;
+  }
+
+  .story-card {
+    width: 120px;
+  }
+
+  .story-card__title {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet responsive */
+@media (min-width: 481px) and (max-width: 768px) {
+  .story-card {
+    width: 130px;
+  }
+}
+
+/* Desktop - larger cards */
+@media (min-width: 769px) {
+  .story-card {
+    width: 150px;
+  }
+
+  .story-row {
+    gap: 1.25rem;
+  }
 }
 
 /* Loading & Error States */
@@ -139,13 +220,25 @@ header p {
 /* Analytics Page */
 .analytics-page h2 {
   margin-bottom: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .analytics-page h2 {
+    font-size: 1.5rem;
+  }
 }
 
 .analytics-subtitle {
   color: #888;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .analytics-subtitle {
+    font-size: 0.9rem;
+  }
 }
 
 .no-data {
@@ -154,8 +247,24 @@ header p {
   text-align: center;
 }
 
+.analytics-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .analytics-table-wrapper {
+    margin: 0;
+    padding: 0;
+    overflow-x: visible;
+  }
+}
+
 .analytics-table {
   width: 100%;
+  min-width: 400px;
   border-collapse: collapse;
   background: #1a1a1a;
   border-radius: 8px;
@@ -164,17 +273,30 @@ header p {
 
 .analytics-table th,
 .analytics-table td {
-  padding: 1rem;
+  padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #333;
+}
+
+@media (min-width: 768px) {
+  .analytics-table th,
+  .analytics-table td {
+    padding: 1rem;
+  }
 }
 
 .analytics-table th {
   background: #252525;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #888;
+}
+
+@media (min-width: 768px) {
+  .analytics-table th {
+    font-size: 0.8rem;
+  }
 }
 
 .analytics-table tr:last-child td {

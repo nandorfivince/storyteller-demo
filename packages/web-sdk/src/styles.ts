@@ -4,13 +4,34 @@ export const SDK_STYLES = `
   gap: 1rem;
   overflow-x: auto;
   padding: 0.5rem 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ministories-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Spacer elements for proper padding in scroll container */
+.ministories-row::before,
+.ministories-row::after {
+  content: '';
+  flex-shrink: 0;
+  width: 1px;
 }
 
 .ministories-card {
   flex-shrink: 0;
-  width: 160px;
+  width: 140px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  scroll-snap-align: start;
+}
+
+.ministories-card:first-of-type {
+  scroll-snap-align: start;
 }
 
 .ministories-card:hover {
@@ -18,8 +39,8 @@ export const SDK_STYLES = `
 }
 
 .ministories-card__cover {
-  width: 160px;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 9 / 16;
   border-radius: 12px;
   overflow: hidden;
   background: #1a1a1a;
@@ -41,7 +62,7 @@ export const SDK_STYLES = `
 }
 
 .ministories-card__title {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
   white-space: nowrap;
@@ -54,6 +75,39 @@ export const SDK_STYLES = `
   font-size: 0.75rem;
   color: #888;
   text-transform: uppercase;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .ministories-row {
+    gap: 0.75rem;
+  }
+
+  .ministories-card {
+    width: 120px;
+  }
+
+  .ministories-card__title {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet responsive */
+@media (min-width: 481px) and (max-width: 768px) {
+  .ministories-card {
+    width: 130px;
+  }
+}
+
+/* Desktop - larger cards */
+@media (min-width: 769px) {
+  .ministories-card {
+    width: 150px;
+  }
+
+  .ministories-row {
+    gap: 1.25rem;
+  }
 }
 
 .ministories-loading {
@@ -72,6 +126,7 @@ export const SDK_STYLES = `
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 
 .ministories-player__backdrop {
@@ -88,27 +143,49 @@ export const SDK_STYLES = `
   position: relative;
   width: 100%;
   max-width: 450px;
-  height: 80vh;
-  max-height: 800px;
+  height: 100%;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+@media (min-width: 768px) {
+  .ministories-player__container {
+    height: 80vh;
+    max-height: 800px;
+  }
+}
+
 .ministories-player__close {
   position: absolute;
-  top: -40px;
-  right: 0;
-  background: none;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.5);
   border: none;
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
   line-height: 1;
   opacity: 0.8;
   transition: opacity 0.2s;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .ministories-player__close {
+    top: -50px;
+    right: 0;
+    background: none;
+    font-size: 2rem;
+    width: auto;
+    height: auto;
+  }
 }
 
 .ministories-player__close:hover {
@@ -142,18 +219,31 @@ export const SDK_STYLES = `
   background: linear-gradient(transparent, rgba(0,0,0,0.8));
   color: #fff;
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  .ministories-player__caption {
+    font-size: 1rem;
+  }
 }
 
 .ministories-player__nav {
   position: absolute;
   top: 50%;
-  left: -60px;
-  right: -60px;
+  left: 10px;
+  right: 10px;
   transform: translateY(-50%);
   display: flex;
   justify-content: space-between;
   pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .ministories-player__nav {
+    left: -60px;
+    right: -60px;
+  }
 }
 
 .ministories-player__nav-btn {
@@ -161,12 +251,20 @@ export const SDK_STYLES = `
   background: rgba(255,255,255,0.2);
   border: none;
   color: #fff;
-  font-size: 2rem;
-  width: 50px;
-  height: 50px;
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s;
+}
+
+@media (min-width: 768px) {
+  .ministories-player__nav-btn {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .ministories-player__nav-btn:hover {
@@ -177,8 +275,14 @@ export const SDK_STYLES = `
   position: absolute;
   bottom: 20px;
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+  .ministories-player__progress {
+    font-size: 0.9rem;
+  }
 }
 
 /* Debug Overlay */

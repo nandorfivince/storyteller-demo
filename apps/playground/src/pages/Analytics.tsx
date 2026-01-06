@@ -40,22 +40,24 @@ export default function Analytics() {
       ) : topStories.length === 0 ? (
         <p className="no-data">No data yet. Open some stories to see analytics!</p>
       ) : (
-        <table className="analytics-table">
-          <thead>
-            <tr>
-              <th>Story</th>
-              <th>Opens</th>
-            </tr>
-          </thead>
-          <tbody>
-            {topStories.map((story) => (
-              <tr key={story.story_id}>
-                <td>{story.title}</td>
-                <td className="opens-count">{story.opens}</td>
+        <div className="analytics-table-wrapper">
+          <table className="analytics-table">
+            <thead>
+              <tr>
+                <th>Story</th>
+                <th>Opens</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {topStories.map((story) => (
+                <tr key={story.story_id}>
+                  <td>{story.title}</td>
+                  <td className="opens-count">{story.opens}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )
