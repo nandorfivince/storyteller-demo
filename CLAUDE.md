@@ -95,8 +95,4 @@ destroy()
 - "anthropic"
 - "claude"
 - "Claude Code"
-
-**Use this Co-Authored-By:**
-```
-Co-Authored-By: storyteller <storyteller@storyteller.com>
-```
+- Co-Authored-By lines
