@@ -180,6 +180,33 @@ export const SDK_STYLES = `
   font-size: 0.9rem;
   opacity: 0.8;
 }
+
+/* Debug Overlay */
+.ministories-debug-overlay {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #0f0;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  z-index: 10001;
+  min-width: 180px;
+  border: 1px solid #0f0;
+}
+
+.ministories-debug-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #0f0;
+}
+
+.ministories-debug-metrics {
+  line-height: 1.6;
+}
 `
 
 let stylesInjected = false

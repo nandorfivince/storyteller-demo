@@ -1,6 +1,17 @@
 import type { StoryDetail, OpenStoryOptions } from '../types'
 import { fetchStoryDetail } from '../api'
 import { trackStoryOpen, trackPageView, trackStoryClose } from '../analytics'
+import {
+  markPlayerOpenStart,
+  markPlayerOpenEnd,
+  markFirstPageRenderStart,
+  markFirstPageRenderEnd,
+  markPageRenderStart,
+  markPageRenderEnd,
+  showDebugOverlay,
+  hideDebugOverlay,
+  resetMetrics,
+} from '../performance'
 
 let playerElement: HTMLElement | null = null
 let currentStory: StoryDetail | null = null
@@ -10,6 +21,10 @@ let onCloseCallback: (() => void) | null = null
 export async function openPlayer(options: OpenStoryOptions & { onClose?: () => void }): Promise<void> {
   const { storyId, startIndex = 0, onClose } = options
   onCloseCallback = onClose || null
+
+  // Start performance measurement
+  resetMetrics()
+  markPlayerOpenStart()
 
   // Fetch story details
   const story = await fetchStoryDetail(storyId)
@@ -27,8 +42,19 @@ export async function openPlayer(options: OpenStoryOptions & { onClose?: () => v
 
   // Create player overlay
   createPlayerElement()
+
+  // Measure first page render
+  markFirstPageRenderStart()
   renderCurrentPage()
+  markFirstPageRenderEnd()
+
   addEventListeners()
+
+  // Mark player open complete
+  markPlayerOpenEnd()
+
+  // Show debug overlay if ?debug=1
+  showDebugOverlay()
 
   // Prevent body scroll
   document.body.style.overflow = 'hidden'
@@ -39,6 +65,9 @@ export function closePlayer(): void {
   if (currentStory) {
     trackStoryClose(currentStory.id, currentIndex)
   }
+
+  // Hide debug overlay
+  hideDebugOverlay()
 
   if (playerElement) {
     playerElement.remove()
@@ -121,7 +150,9 @@ function nextPage(): void {
   if (currentIndex < currentStory.pages.length - 1) {
     currentIndex++
     trackPageView(currentStory.id, currentIndex)
+    markPageRenderStart()
     renderCurrentPage()
+    markPageRenderEnd()
   }
 }
 
@@ -130,7 +161,9 @@ function prevPage(): void {
   if (currentIndex > 0) {
     currentIndex--
     trackPageView(currentStory.id, currentIndex)
+    markPageRenderStart()
     renderCurrentPage()
+    markPageRenderEnd()
   }
 }
 
