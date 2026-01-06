@@ -1,32 +1,48 @@
 // MiniStories Web SDK
-// Phase 0: Basic structure
+// A lightweight SDK for embedding story experiences
 
-export interface InitOptions {
-  endpoint: string
-}
+import type { InitOptions, CreateStoryRowOptions, OpenStoryOptions } from './types'
+import { setEndpoint, getEndpoint } from './api'
+import { createStoryRow as createRow } from './components/StoryRow'
+import { removeStyles } from './styles'
 
-let apiEndpoint: string | null = null
+export type { InitOptions, CreateStoryRowOptions, OpenStoryOptions, Story, StoryDetail, Page } from './types'
 
+/**
+ * Initialize the MiniStories SDK
+ * @param options - Configuration options including API endpoint
+ */
 export function initialize(options: InitOptions): void {
-  apiEndpoint = options.endpoint
-  console.log('[MiniStories] SDK initialized with endpoint:', apiEndpoint)
+  setEndpoint(options.endpoint)
+  console.log('[MiniStories] SDK initialized with endpoint:', options.endpoint)
 }
 
-export function getEndpoint(): string | null {
-  return apiEndpoint
+/**
+ * Create a story row in the specified container
+ * @param options - Container element and optional category filter
+ */
+export async function createStoryRow(options: CreateStoryRowOptions): Promise<void> {
+  if (!getEndpoint()) {
+    console.error('[MiniStories] SDK not initialized. Call initialize() first.')
+    return
+  }
+  await createRow(options)
 }
 
-// Placeholder for Phase 4
-export function createStoryRow(_options: { container: HTMLElement; category?: string }): void {
-  console.log('[MiniStories] createStoryRow - will be implemented in Phase 4')
+/**
+ * Open a story in the fullscreen player
+ * @param options - Story ID and optional start index
+ */
+export function openStory(options: OpenStoryOptions): void {
+  console.log('[MiniStories] openStory called:', options)
+  // Player will be implemented in Phase 5
 }
 
-// Placeholder for Phase 5
-export function openStory(_options: { storyId: number; startIndex?: number }): void {
-  console.log('[MiniStories] openStory - will be implemented in Phase 5')
-}
-
+/**
+ * Clean up SDK resources
+ */
 export function destroy(): void {
-  apiEndpoint = null
+  setEndpoint('')
+  removeStyles()
   console.log('[MiniStories] SDK destroyed')
 }
