@@ -1,5 +1,6 @@
 import type { StoryDetail, OpenStoryOptions } from '../types'
 import { fetchStoryDetail } from '../api'
+import { trackStoryOpen, trackPageView, trackStoryClose } from '../analytics'
 
 let playerElement: HTMLElement | null = null
 let currentStory: StoryDetail | null = null
@@ -20,6 +21,10 @@ export async function openPlayer(options: OpenStoryOptions & { onClose?: () => v
   currentStory = story
   currentIndex = startIndex
 
+  // Track story open
+  trackStoryOpen(storyId)
+  trackPageView(storyId, currentIndex)
+
   // Create player overlay
   createPlayerElement()
   renderCurrentPage()
@@ -30,6 +35,11 @@ export async function openPlayer(options: OpenStoryOptions & { onClose?: () => v
 }
 
 export function closePlayer(): void {
+  // Track story close before cleanup
+  if (currentStory) {
+    trackStoryClose(currentStory.id, currentIndex)
+  }
+
   if (playerElement) {
     playerElement.remove()
     playerElement = null
@@ -110,13 +120,16 @@ function nextPage(): void {
   if (!currentStory) return
   if (currentIndex < currentStory.pages.length - 1) {
     currentIndex++
+    trackPageView(currentStory.id, currentIndex)
     renderCurrentPage()
   }
 }
 
 function prevPage(): void {
+  if (!currentStory) return
   if (currentIndex > 0) {
     currentIndex--
+    trackPageView(currentStory.id, currentIndex)
     renderCurrentPage()
   }
 }

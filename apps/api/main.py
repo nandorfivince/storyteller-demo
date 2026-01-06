@@ -124,3 +124,37 @@ def create_event(event: EventCreate, session: Session = Depends(get_session)):
     session.add(db_event)
     session.commit()
     return {"ok": True}
+
+
+class TopStoryItem(BaseModel):
+    story_id: int
+    title: str
+    opens: int
+
+
+@app.get("/api/analytics/top-stories", response_model=list[TopStoryItem])
+def get_top_stories(session: Session = Depends(get_session)):
+    """Get top stories by number of opens"""
+    from sqlalchemy import func
+
+    # Count story_open events per story
+    results = session.exec(
+        select(Event.story_id, func.count(Event.id).label('opens'))
+        .where(Event.type == 'story_open')
+        .where(Event.story_id.isnot(None))
+        .group_by(Event.story_id)
+        .order_by(func.count(Event.id).desc())
+    ).all()
+
+    # Get story titles
+    top_stories = []
+    for story_id, opens in results:
+        story = session.get(Story, story_id)
+        if story:
+            top_stories.append(TopStoryItem(
+                story_id=story_id,
+                title=story.title,
+                opens=opens
+            ))
+
+    return top_stories

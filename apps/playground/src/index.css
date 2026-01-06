@@ -29,6 +29,36 @@ header h1 {
 
 header p {
   color: #888;
+  margin-bottom: 1rem;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.nav-btn {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #888;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  border-color: #4a9eff;
+  color: #fafafa;
+}
+
+.nav-btn.active {
+  background: #4a9eff;
+  border-color: #4a9eff;
+  color: #fff;
 }
 
 /* Consumer Page */
@@ -104,4 +134,54 @@ header p {
 
 .error {
   color: #ff6b6b;
+}
+
+/* Analytics Page */
+.analytics-page h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.analytics-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.no-data {
+  color: #888;
+  padding: 2rem;
+  text-align: center;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.analytics-table th {
+  background: #252525;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.analytics-table tr:last-child td {
+  border-bottom: none;
+}
+
+.analytics-table .opens-count {
+  font-weight: 600;
+  color: #4a9eff;
 }
