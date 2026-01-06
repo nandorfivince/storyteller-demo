@@ -1,15 +1,23 @@
 import json
+import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from database import create_db_and_tables, get_session
 from models import Story, Event
 from seed import seed_stories
+
+# Check if static directory exists (production build)
+STATIC_DIR = Path(__file__).parent / "static"
+HAS_STATIC = STATIC_DIR.exists() and (STATIC_DIR / "index.html").exists()
 
 
 @asynccontextmanager
@@ -27,13 +35,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS for local development
+# CORS configuration
+cors_origins = [
+    "http://localhost:5173",  # Vite dev server
+    "http://localhost:8000",  # Same origin
+]
+# In production, allow all origins (or configure specific domains)
+if os.getenv("RENDER"):
+    cors_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",  # Vite dev server
-        "http://localhost:8000",  # Same origin
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -158,3 +171,19 @@ def get_top_stories(session: Session = Depends(get_session)):
             ))
 
     return top_stories
+
+
+# Serve static files in production (when built frontend exists)
+if HAS_STATIC:
+    # Serve static assets (js, css, images)
+    app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets"), name="assets")
+
+    # Catch-all route for SPA - serve index.html for any non-API route
+    @app.get("/{path:path}")
+    async def serve_spa(path: str):
+        # If path looks like a file with extension, try to serve it
+        file_path = STATIC_DIR / path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+        # Otherwise serve index.html for SPA routing
+        return FileResponse(STATIC_DIR / "index.html")

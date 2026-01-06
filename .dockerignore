@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+.venv
+__pycache__
+*.pyc
+
+# Build outputs
+dist
+*.egg-info
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# Git
+.git
+.gitignore
+
+# Test artifacts
+playwright-report
+test-results
+e2e
+
+# Other
+*.md
+*.log
+.env*
+.DS_Store

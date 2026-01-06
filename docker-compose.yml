@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  ministories:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ministories-data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+
+volumes:
+  ministories-data:
