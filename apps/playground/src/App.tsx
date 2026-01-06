@@ -1,3 +1,5 @@
+import Consumer from './pages/Consumer'
+
 export default function App() {
   return (
     <div className="app">
@@ -6,7 +8,7 @@ export default function App() {
         <p>Sport Highlights Demo</p>
       </header>
       <main>
-        <p>Phase 0 complete - monorepo setup working!</p>
+        <Consumer />
       </main>
     </div>
   )
